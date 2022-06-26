@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shophut/providers/cart.dart';
+import 'package:shophut/providers/orders.dart';
 import 'package:shophut/widgets/cartItem.dart';
 
 class CartScreen extends StatelessWidget {
@@ -10,6 +11,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartData = Provider.of<Cart>(context);
     final cartItemsList = cartData.items.values.toList();
+    final totalInCart = cartData.totalAmount;
 
     return Scaffold(
       appBar: AppBar(
@@ -32,9 +34,16 @@ class CartScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Chip(
-                    label: Text(cartData.totalAmount.toStringAsFixed(2)),
+                    label: Text(totalInCart.toStringAsFixed(2)),
                   ),
-                  TextButton(onPressed: () {}, child: Text('ORDER NOW'))
+                  TextButton(
+                      onPressed: () {
+                        Provider.of<Orders>(context, listen: false).addOrder(
+                            cartItemsList,
+                            totalInCart); //we dont want to listen to the changes in orders
+                        cartData.clear();
+                      },
+                      child: Text('ORDER NOW'))
                 ],
               ),
             ),

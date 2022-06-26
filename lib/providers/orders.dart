@@ -18,7 +18,9 @@ class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
 
   List<OrderItem> get orders {
-    return [..._orders];
+    return [
+      ..._orders
+    ]; //spreading it so that we dont edit the orders object by reference
   }
 
   void addOrder(List<CartItem> cartProducts, double total) {
@@ -29,5 +31,6 @@ class Orders with ChangeNotifier {
             amount: total,
             products: cartProducts,
             dateTime: DateTime.now()));
+    notifyListeners();
   }
 }

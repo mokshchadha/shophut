@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shophut/providers/cart.dart';
 import 'package:shophut/providers/products.dart';
 import 'package:shophut/screens/cart_screen.dart';
+import 'package:shophut/widgets/app_drawer.dart';
 import 'package:shophut/widgets/badge.dart';
 
 import '../widgets/products_grid.dart';
@@ -24,6 +25,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     final productsData = Provider.of<Products>(context);
 
     return Scaffold(
+      drawer: AppDrawer(),
       appBar: AppBar(
         title: Text('MyShop'),
         actions: [
