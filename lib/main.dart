@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shophut/providers/cart.dart';
 import 'package:shophut/screens/cart_screen.dart';
 import 'package:shophut/screens/orders_screen.dart';
+import 'package:shophut/screens/user_products_screen.dart';
 
 import './screens/products_overview_screen.dart';
 import './screens/product_detail_screen.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.purple,
             accentColor: Colors.deepOrange,
+            errorColor: Colors.red,
             fontFamily: 'Lato',
           ),
           home: ProductsOverviewScreen(),
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
             OrdersScreen.routeName: (ctx) => OrdersScreen(),
+            UserProductsScreen.routeName: (ctx) => UserProductsScreen()
           }),
     );
   }
