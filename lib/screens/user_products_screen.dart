@@ -6,6 +6,8 @@ import 'package:shophut/providers/products.dart';
 import 'package:shophut/widgets/app_drawer.dart';
 import 'package:shophut/widgets/user_product_item.dart';
 
+import 'edit_products_screen.dart';
+
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
   const UserProductsScreen({Key? key}) : super(key: key);
@@ -20,7 +22,9 @@ class UserProductsScreen extends StatelessWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(EditProductScreen.routeName);
+              },
             )
           ],
         ),
@@ -29,7 +33,9 @@ class UserProductsScreen extends StatelessWidget {
           child: ListView.builder(
             itemBuilder: (ctx, idx) => Column(
               children: [
-                UserProductItem(productsData.items[idx].title,
+                UserProductItem(
+                    productsData.items[idx].id,
+                    productsData.items[idx].title,
                     productsData.items[idx].imageUrl),
                 Divider()
               ],
