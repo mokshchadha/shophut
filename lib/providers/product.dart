@@ -1,4 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+final URLToAId = (id) =>
+    'https://quick-heaven-344723-default-rtdb.firebaseio.com/products/$id.json';
 
 class Product with ChangeNotifier {
   final String id;
@@ -19,6 +24,8 @@ class Product with ChangeNotifier {
 
   void toggleFavoriteStatus() {
     isFavorite = !isFavorite;
+    http.patch(Uri.parse(URLToAId(id)),
+        body: json.encode({'isFavorite': isFavorite}));
     notifyListeners();
   }
 }

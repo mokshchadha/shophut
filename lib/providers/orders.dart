@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shophut/providers/cart.dart';
+
+final ORDERS_URL = Uri.parse(
+    'https://quick-heaven-344723-default-rtdb.firebaseio.com/orders.json');
 
 class OrderItem {
   final String id;
@@ -23,14 +28,28 @@ class Orders with ChangeNotifier {
     ]; //spreading it so that we dont edit the orders object by reference
   }
 
-  void addOrder(List<CartItem> cartProducts, double total) {
+  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+    final timestamp = DateTime.now();
+    final response = await http.post((ORDERS_URL),
+        body: json.encode({
+          'amount': total,
+          'dateTime': timestamp.toIso8601String(),
+          'products': cartProducts
+              .map((e) => json.encode({
+                    'id': e.id,
+                    'quantity': e.quantity,
+                    'title': e.title,
+                    'price': e.price
+                  }))
+              .toList()
+        }));
     _orders.insert(
         0,
         OrderItem(
-            id: DateTime.now().toString(),
+            id: json.decode(response.body)['name'],
             amount: total,
             products: cartProducts,
-            dateTime: DateTime.now()));
+            dateTime: timestamp));
     notifyListeners();
   }
 }

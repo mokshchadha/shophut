@@ -12,35 +12,43 @@ class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
   const UserProductsScreen({Key? key}) : super(key: key);
 
+  Future<void> _onRefresh(ctx) {
+    return Provider.of<Products>(ctx, listen: false).fetchAndStoreProduct();
+  }
+
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
+
     return Scaffold(
-        drawer: AppDrawer(),
+        drawer: const AppDrawer(),
         appBar: AppBar(
-          title: Text('Your Products'),
+          title: const Text('Your Products'),
           actions: [
             IconButton(
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
               onPressed: () {
                 Navigator.of(context).pushNamed(EditProductScreen.routeName);
               },
             )
           ],
         ),
-        body: Padding(
-          padding: EdgeInsets.all(8),
-          child: ListView.builder(
-            itemBuilder: (ctx, idx) => Column(
-              children: [
-                UserProductItem(
-                    productsData.items[idx].id,
-                    productsData.items[idx].title,
-                    productsData.items[idx].imageUrl),
-                Divider()
-              ],
+        body: RefreshIndicator(
+          onRefresh: () => _onRefresh(context),
+          child: Padding(
+            padding: EdgeInsets.all(8),
+            child: ListView.builder(
+              itemBuilder: (ctx, idx) => Column(
+                children: [
+                  UserProductItem(
+                      productsData.items[idx].id,
+                      productsData.items[idx].title,
+                      productsData.items[idx].imageUrl),
+                  Divider()
+                ],
+              ),
+              itemCount: productsData.items.length,
             ),
-            itemCount: productsData.items.length,
           ),
         ));
   }
